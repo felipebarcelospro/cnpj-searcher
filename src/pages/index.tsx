@@ -56,6 +56,19 @@ export default function Home() {
     setBusiness(data)
   }
 
+  const maskCNPJ = value => {
+    // return value
+    //   .replace(/\D/g, '')
+    //   .replace(/^(\d{2})(\d{3})?(\d{3})?(\d{4})?(\d{2})?/, '$1.$2.$3/$4-$5')
+
+    return value
+      .replace(/\D/g, '')
+      .replace(/(\d{2})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d{4})(\d{2})/, '$1/$2-$3')
+      .replace(/(-\d{2})\d+?$/, '$1')
+  }
+
   return (
     <Container w="container.xl" py="16">
       <Box>
@@ -64,7 +77,8 @@ export default function Home() {
             pr="7rem"
             type="text"
             placeholder="Insira o CNPJ"
-            onChange={e => setSearch(e.target.value)}
+            value={search}
+            onChange={e => setSearch(maskCNPJ(e.target.value))}
             disabled={loading}
           />
           <InputRightElement width="7rem">
