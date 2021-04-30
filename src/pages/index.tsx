@@ -133,13 +133,13 @@ export default function Home() {
               <Heading fontSize="xs" color="gray.400">
                 EMAIL
               </Heading>
-              <Heading fontSize="md">{business.phone}</Heading>
+              <Heading fontSize="md">{business.email}</Heading>
             </Box>
             <Box>
               <Heading fontSize="xs" color="gray.400">
                 TELEFONE
               </Heading>
-              <Heading fontSize="md">{business.email}</Heading>
+              <Heading fontSize="md">{business.phone}</Heading>
             </Box>
           </Grid>
         </Box>
