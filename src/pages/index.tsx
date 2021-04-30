@@ -1,6 +1,7 @@
 import { Button } from '@chakra-ui/button'
 import { Input, InputGroup, InputRightElement } from '@chakra-ui/input'
 import { Box, Container, Grid, Heading } from '@chakra-ui/layout'
+import { useToast } from '@chakra-ui/toast'
 import { useState } from 'react'
 
 type Business = {
@@ -17,19 +18,42 @@ export default function Home() {
   const [business, setBusiness] = useState<Business | null>(null)
   const [loading, setLoading] = useState(false)
 
+  const toast = useToast()
+
   const handleSearch = async () => {
+    setBusiness(null)
+
+    if (!search) {
+      toast({
+        title: 'Insira um CNPJ válido',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      })
+
+      return
+    }
+
     setLoading(true)
 
     const res = await fetch(`/api/cnpj/${search}`)
     const data = await res.json()
 
-    if (!data) {
-      alert('CNPJ Not Found')
+    setLoading(false)
+
+    if (data.errorCode === 404) {
+      toast({
+        title: 'CNPJ Não Encontrado',
+        description: 'Insira os dados e tente novamente',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      })
+
+      return
     }
 
     setBusiness(data)
-
-    setLoading(false)
   }
 
   return (

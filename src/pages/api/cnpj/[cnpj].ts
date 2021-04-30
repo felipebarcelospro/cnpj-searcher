@@ -23,11 +23,13 @@ export default async (
   const res = await fetch(`https://www.receitaws.com.br/v1/cnpj/${cnpj}`)
   const data = await res.json()
 
-  if (!data) {
-    response.status(404).json({ errorCode: 404, errorMessage: 'Not Found' })
+  if (data.status === 'ERROR') {
+    return response
+      .status(404)
+      .json({ errorCode: 404, errorMessage: 'Not Found' })
   }
 
-  response.status(200).json({
+  return response.status(200).json({
     type: data.tipo,
     name: data.nome,
     uf: data.uf,
