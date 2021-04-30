@@ -14,7 +14,7 @@ type Business = {
 
 export default function Home() {
   const [search, setSearch] = useState('')
-  const [business, setBusiness] = useState({} as Business)
+  const [business, setBusiness] = useState<Business | null>(null)
   const [loading, setLoading] = useState(false)
 
   const handleSearch = async () => {
