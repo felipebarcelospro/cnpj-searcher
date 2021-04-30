@@ -36,7 +36,7 @@ export default function Home() {
 
     setLoading(true)
 
-    const res = await fetch(`/api/cnpj/${search}`)
+    const res = await fetch(`/api/cnpj/${removeMaskToInput(search)}`)
     const data = await res.json()
 
     setLoading(false)
@@ -56,11 +56,7 @@ export default function Home() {
     setBusiness(data)
   }
 
-  const maskCNPJ = value => {
-    // return value
-    //   .replace(/\D/g, '')
-    //   .replace(/^(\d{2})(\d{3})?(\d{3})?(\d{4})?(\d{2})?/, '$1.$2.$3/$4-$5')
-
+  const addMaskToInput = value => {
     return value
       .replace(/\D/g, '')
       .replace(/(\d{2})(\d)/, '$1.$2')
@@ -69,8 +65,19 @@ export default function Home() {
       .replace(/(-\d{2})\d+?$/, '$1')
   }
 
+  const removeMaskToInput = value => {
+    // eslint-disable-next-line no-useless-escape
+    return value.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '')
+  }
+
   return (
-    <Container w="container.xl" py="16">
+    <Container
+      w="container.xl"
+      py="16"
+      minH="100vh"
+      d="flex"
+      flexDirection="column"
+    >
       <Box>
         <InputGroup size="md">
           <Input
@@ -78,7 +85,7 @@ export default function Home() {
             type="text"
             placeholder="Insira o CNPJ"
             value={search}
-            onChange={e => setSearch(maskCNPJ(e.target.value))}
+            onChange={e => setSearch(addMaskToInput(e.target.value))}
             disabled={loading}
           />
           <InputRightElement width="7rem">
